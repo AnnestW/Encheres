@@ -3,7 +3,7 @@ package fr.eni.ecole.encheres.bo;
 import java.time.LocalDate;
 
 public class Enchere {
-	private ArticleVendu1 articleAVendre;
+	private ArticleVendu articleAVendre;
 	private LocalDate dateEnchere;
 	private Integer montantEnchere;
 	private Utilisateur encherisseur;
@@ -12,7 +12,7 @@ public class Enchere {
 
 	}
 
-	public Enchere(ArticleVendu1 articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
+	public Enchere(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 			Utilisateur encherisseur) {
 		this.articleAVendre = articleAVendre;
 		this.dateEnchere = dateEnchere;
@@ -36,11 +36,11 @@ public class Enchere {
 		this.montantEnchere = montantEnchere;
 	}
 
-	public ArticleVendu1 getArticleAVendre() {
+	public ArticleVendu getArticleAVendre() {
 		return articleAVendre;
 	}
 
-	public void setArticleAVendre(ArticleVendu1 articleAVendre) {
+	public void setArticleAVendre(ArticleVendu articleAVendre) {
 		this.articleAVendre = articleAVendre;
 	}
 
