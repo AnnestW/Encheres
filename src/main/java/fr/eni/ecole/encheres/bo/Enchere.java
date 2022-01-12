@@ -20,6 +20,8 @@ public class Enchere {
 		this.encherisseur = encherisseur;
 	}
 
+	
+
 	public LocalDate getDateEnchere() {
 		return dateEnchere;
 	}
@@ -42,6 +44,16 @@ public class Enchere {
 
 	public void setArticleAVendre(ArticleVendu articleAVendre) {
 		this.articleAVendre = articleAVendre;
+	}
+	
+	
+
+	public Utilisateur getEncherisseur() {
+		return encherisseur;
+	}
+
+	public void setEncherisseur(Utilisateur encherisseur) {
+		this.encherisseur = encherisseur;
 	}
 
 	@Override

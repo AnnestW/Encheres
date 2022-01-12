@@ -3,13 +3,14 @@ package fr.eni.ecole.encheres.bo;
 import java.time.LocalDate;
 
 public class ArticleVendu {
-    private String noArticle;
+
+    private Integer noArticle;
     private String nomArticle;
     private String description;
     private LocalDate dateDebutEncheres;
     private LocalDate dateFinEncheres;
     private Integer miseAPrix;
-    private double prixVente;
+    private Integer prixVente;
     private String etatVente;
     /**
      * 
@@ -26,9 +27,8 @@ public class ArticleVendu {
      * @param prixVente
      * @param etatVente
      */
-    public ArticleVendu(String noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-            LocalDate dateFinEncheres, Integer miseAPrix, double prixVente, String etatVente) {
-        super();
+    public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+            LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, String etatVente) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
         this.description = description;
@@ -38,16 +38,38 @@ public class ArticleVendu {
         this.prixVente = prixVente;
         this.etatVente = etatVente;
     }
+    
+	
+	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			Integer miseAPrix, String etatVente) {
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.miseAPrix = miseAPrix;
+		this.etatVente = etatVente;
+	}
+
+	
+
+	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			Integer miseAPrix, Integer prixVente, String etatVente, LocalDate dateFinEncheres) {
+		this(noArticle, nomArticle, description,dateDebutEncheres, miseAPrix,etatVente);
+		this.prixVente = prixVente;
+		this.dateFinEncheres = dateFinEncheres;
+	}
+
+    
     /**
      * @return the noArticle
      */
-    public String getNoArticle() {
+    public Integer getNoArticle() {
         return noArticle;
     }
     /**
      * @param noArticle the noArticle to set
      */
-    public void setNoArticle(String noArticle) {
+    public void setNoArticle(Integer noArticle) {
         this.noArticle = noArticle;
     }
     /**
@@ -119,7 +141,7 @@ public class ArticleVendu {
     /**
      * @param prixVente the prixVente to set
      */
-    public void setPrixVente(double prixVente) {
+    public void setPrixVente(Integer prixVente) {
         this.prixVente = prixVente;
     }
     /**
@@ -144,5 +166,6 @@ public class ArticleVendu {
 
 
 
+	
 
 
