@@ -12,6 +12,7 @@ public class ArticleVendu {
 	private Integer prixVente;
 	private String etatVente;
 	private Categorie categorie;
+	private Utilisateur utilisateur;
 	
 	public ArticleVendu() {
 		
@@ -49,11 +50,22 @@ public class ArticleVendu {
 		this.categorie = categorie;
 	}
 	
-	
-	
-	
-	
-	
+
+
+	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, String etatVente, Categorie categorie,
+			Utilisateur utilisateur) {
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+		this.categorie = categorie;
+		this.utilisateur = utilisateur;
+	}
 
 	public Categorie getCategorie() {
 		return categorie;

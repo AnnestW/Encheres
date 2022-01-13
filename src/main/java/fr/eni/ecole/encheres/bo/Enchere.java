@@ -1,16 +1,33 @@
 package fr.eni.ecole.encheres.bo;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Enchere {
+	private Integer noEnchere;
 	private ArticleVendu articleAVendre;
 	private LocalDate dateEnchere;
 	private Integer montantEnchere;
 	private Utilisateur encherisseur;
 
+
+	
 	public Enchere() {
 
 	}
+	
+	
+
+	public Enchere(Integer noEnchere, ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
+			Utilisateur encherisseur) {
+		this.noEnchere = noEnchere;
+		this.articleAVendre = articleAVendre;
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+		this.encherisseur = encherisseur;
+	}
+
+
 
 	public Enchere(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 			Utilisateur encherisseur) {
@@ -21,6 +38,12 @@ public class Enchere {
 	}
 
 	
+//
+//	public Enchere(Integer noEnchere, ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
+//			Utilisateur encherisseur) {
+//		this(articleAVendre, dateEnchere, montantEnchere, encherisseur);
+//		this.noE
+//	}
 
 	public LocalDate getDateEnchere() {
 		return dateEnchere;
@@ -55,20 +78,33 @@ public class Enchere {
 	public void setEncherisseur(Utilisateur encherisseur) {
 		this.encherisseur = encherisseur;
 	}
+	
+	public Integer getNoArticle() {
+		return articleAVendre.getNoArticle();
+	}
+
+	public Integer getNoUtil() {
+		return encherisseur.getNoUtilisateur();
+	}
+	
+	
+
+	public Integer getNoEnchere() {
+		return noEnchere;
+	}
+
+
+
+	public void setNoEnchere(Integer noEnchere) {
+		this.noEnchere = noEnchere;
+	}
+
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Enchere [articleAVendre=");
-		builder.append(articleAVendre);
-		builder.append(", dateEnchere=");
-		builder.append(dateEnchere);
-		builder.append(", montantEnchere=");
-		builder.append(montantEnchere);
-		builder.append(", utilisateur=");
-		builder.append(encherisseur);
-		builder.append("]");
-		return builder.toString();
+		return "Enchere [articleAVendre=" + articleAVendre + ", dateEnchere=" + dateEnchere + ", montantEnchere="
+				+ montantEnchere + ", encherisseur=" + encherisseur + "]";
 	}
+
 
 }

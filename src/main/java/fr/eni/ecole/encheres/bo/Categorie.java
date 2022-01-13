@@ -12,7 +12,6 @@ public class Categorie {
 	
 	
 	public Categorie(Integer noCategorie, String libelle) {
-		super();
 		this.noCategorie = noCategorie;
 		this.libelle = libelle;
 	}

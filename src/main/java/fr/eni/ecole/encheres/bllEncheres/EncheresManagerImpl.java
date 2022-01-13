@@ -48,7 +48,7 @@ public class EncheresManagerImpl implements EncheresManager {
 				} else {
 						try {
 							dao.insert(enchere);
-						} catch (DALException e1) {
+						} catch (DALException e1){
 							e1.printStackTrace();
 							throw new BLLException(e);
 						}
@@ -91,7 +91,7 @@ public class EncheresManagerImpl implements EncheresManager {
 //	}
 
 	@Override
-	public List<Enchere> getAllEncheres() throws DALException, BLLException {
+	public List<Enchere> getAllEncheres() throws BLLException {
 		try {
 			return dao.getAllEncheres();
 		} catch (DALException e) {
@@ -102,15 +102,35 @@ public class EncheresManagerImpl implements EncheresManager {
 
 	@Override
 	public List<Enchere> getEncheresEnCours() throws BLLException {
+		try {
 		return dao.getEncheresEnCours();
+		}catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e);
+		}
 	}
 
-//	@Override
-//	public Enchere afficherEnchere(Enchere enchere) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<Enchere> selectByNomArticle(String nomArticle)throws BLLException{
+		try {
+			return dao.selectByNomArticle(nomArticle);
+		} catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e);
+		}
+	}
 
+	@Override
+	public List<Enchere> selectByCategorie(String categorie)throws BLLException {
+		try {
+			return dao.selectByCategorie(categorie);
+		} catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e);
+		}
+	}
+
+	
 
 }
 
