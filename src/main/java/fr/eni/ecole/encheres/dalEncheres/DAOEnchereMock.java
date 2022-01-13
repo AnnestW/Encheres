@@ -25,14 +25,15 @@ public class DAOEnchereMock implements DAOEnchere {
 
 	@Override
 	public Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException {
-		List<Enchere> all = getAll();
+		List<Enchere> all = getAllEncheres();
 		for (Enchere enchere : all) {
 			if (enchere.getArticleAVendre().getNoArticle() == article.getNoArticle()
 					&& enchere.getEncherisseur().getNoUtilisateur() == encherisseur.getNoUtilisateur()) {
-
+				return enchere;
 			}
-		}
-		return enchere;
+		}	
+		//TODO Mettre Exception not found?
+	return null;
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class DAOEnchereMock implements DAOEnchere {
 		List<Enchere> enCours = new ArrayList<Enchere>();
 		List<Enchere> all;
 		try {
-			all = getAll();
+			all = getAllEncheres();
 			for (Enchere enchere : all) {
 				if (enchere.getArticleAVendre().getEtatVente().equalsIgnoreCase("EnCours"))
 					enCours.add(enchere);
@@ -54,7 +55,31 @@ public class DAOEnchereMock implements DAOEnchere {
 	}
 
 	@Override
-	public List<Enchere> getAll() throws DALException {
+	public List<Enchere> getAllEncheres() throws DALException {
 		return lstAllEncheres;
+	}
+
+	@Override
+	public  List<Enchere> selectByNomArticle(String nomArticle) throws DALException {
+		List<Enchere> all = getAllEncheres();
+		List<Enchere> lstByNom = new ArrayList<Enchere>();
+		for (Enchere enchere : all) {
+			if (enchere.getArticleAVendre().getNomArticle().equalsIgnoreCase(nomArticle)){
+				lstByNom.add(enchere);
+		}
+		}	return lstByNom;
+		
+	}
+
+
+	@Override
+	public List<Enchere> selectByCategorie(String categorie) throws DALException {
+		List<Enchere> all = getAllEncheres();
+		List<Enchere> lstByCategorie = new ArrayList<Enchere>();
+		for (Enchere enchere : all) {
+			if (enchere.getArticleAVendre().getCategorie().getLibelle().equalsIgnoreCase(categorie)){
+				lstByCategorie.add(enchere);
+			}
+		}return lstByCategorie;
 	}
 }

@@ -28,7 +28,7 @@ public class DALEnchereTest {
 	
 		
 		try {
-			System.out.println(dao.getAll().toString());
+			System.out.println(dao.getAllEncheres().toString());
 		} catch (DALException e) {
 			e.printStackTrace();
 		}
@@ -40,7 +40,7 @@ public class DALEnchereTest {
 		}
 
 try {
-	System.out.println(dao.getAll());
+	System.out.println(dao.getAllEncheres());
 } catch (DALException e) {
 	// TODO Auto-generated catch block
 	e.printStackTrace();
