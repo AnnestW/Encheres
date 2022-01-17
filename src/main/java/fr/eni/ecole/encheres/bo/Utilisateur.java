@@ -18,24 +18,38 @@ rue codePostal ville motDePasse credit administrateur
 	private String email;
 	private String telephone;
 	private String rue;
-	private Integer codePostal;
+	private String codePostal;
 	private String ville;
 	private String motDePasse;
 	private Integer credit;
-	private String administrateur;
+	private boolean administrateur = false;
 	
 	
 	
 	public Utilisateur() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 	public Utilisateur(Integer noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, Integer codePostal, String ville, String motDePasse, Integer credit, String administrateur) {
-		super();
+			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur) {
 		this.noUtilisateur = noUtilisateur;
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.motDePasse = motDePasse;
+		this.credit = credit;
+		this.administrateur = administrateur;
+	}
+
+
+	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur) {
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -92,10 +106,10 @@ rue codePostal ville motDePasse credit administrateur
 	public void setRue(String rue) {
 		this.rue = rue;
 	}
-	public Integer getCodePostal() {
+	public String getCodePostal() {
 		return codePostal;
 	}
-	public void setCodePostal(Integer codePostal) {
+	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
 	}
 	public String getVille() {
@@ -116,10 +130,10 @@ rue codePostal ville motDePasse credit administrateur
 	public void setCredit(Integer credit) {
 		this.credit = credit;
 	}
-	public String getAdministrateur() {
+	public boolean getAdministrateur() {
 		return administrateur;
 	}
-	public void setAdministrateur(String administrateur) {
+	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
 	}
 

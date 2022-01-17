@@ -14,9 +14,11 @@ public interface EncheresManager {
 	public void modifyEnchere(Enchere enchere, Integer montantEnchere);
 	public List<Enchere> getEncheresEnCours() throws BLLException;
 	public List <Enchere> getAllEncheres()throws DALException, BLLException ;
-	//public Enchere afficherEnchere(Enchere enchere);
-	//TODO tri par categories
-	//public List <Enchere> triParCategories();
+	public List <Enchere> selectByNomArticle(String nomArticle) throws BLLException;
+	public List <Enchere> selectByCategorie(Integer noCategorie)throws BLLException;
+	public List <Enchere> selectByEncherisseur(Integer noUtilisateur)throws BLLException;
+	public List <Enchere> selectByEncherisseurEtatVente(Integer noUtilisateur)throws BLLException;
+	
 	
 	
 
