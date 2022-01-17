@@ -17,43 +17,36 @@ public class EncheresManagerImpl implements EncheresManager {
 	// Méthode en charge de créér une nouvelle enchère sur un article mis à vendre,
 	// suivant les conditions données.
 	@Override
-	public void encherir(ArticleVendu article, LocalDate dateEnchere, Integer montantEnchere,
-			Utilisateur encherisseur) throws BLLException {
-		
+	public void encherir(ArticleVendu article, LocalDate dateEnchere, Integer montantEnchere, Utilisateur encherisseur)
+			throws BLLException {
+
 		BLLException e = new BLLException();
 		if (verificationMontant(article, montantEnchere, e)) {
-			createOrUpdate(article, dateEnchere,encherisseur, montantEnchere, e);
+			createOrUpdate(article, dateEnchere, encherisseur, montantEnchere, e);
 		}
 	}
 
-//	
-//
-//	public void verificationNow(LocalDate dateEnchere, BLLException e) {
-//		if (!dateEnchere.equals(LocalDate.now())) {
-//			e.ajouterErreur(new ParameterException("La date de l'enchère doit être aujourd'hui"));
-//		}
-//	}
-
-	 void createOrUpdate(ArticleVendu article, LocalDate dateEnchere, Utilisateur encherisseur, Integer montantEnchere, BLLException e) throws BLLException{
-			Enchere enchereExistante;
-			Enchere enchere = new Enchere (article, dateEnchere, montantEnchere, encherisseur);
+	void createOrUpdate(ArticleVendu article, LocalDate dateEnchere, Utilisateur encherisseur, Integer montantEnchere,
+			BLLException e) throws BLLException {
+		Enchere enchereExistante;
+		Enchere enchere = new Enchere(article, dateEnchere, montantEnchere, encherisseur);
+		try {
+			enchereExistante = dao.selectByArticleEncherisseur(article, encherisseur);
+		} catch (DALException e1) {
+			e1.printStackTrace();
+			throw new BLLException(e);
+		}
+		if (enchereExistante != null) {
+			modifyEnchere(enchereExistante, montantEnchere);
+		} else {
 			try {
-				enchereExistante = dao.selectByArticleEncherisseur(article, encherisseur);
+				dao.insert(enchere);
 			} catch (DALException e1) {
 				e1.printStackTrace();
 				throw new BLLException(e);
 			}
-				if (enchereExistante!=null) {
-					modifyEnchere(enchereExistante, montantEnchere);
-				} else {
-						try {
-							dao.insert(enchere);
-						} catch (DALException e1){
-							e1.printStackTrace();
-							throw new BLLException(e);
-						}
-					} 
-			}
+		}
+	}
 
 	public void modifyEnchere(Enchere enchere, Integer montantEnchere) {
 		enchere.setMontantEnchere(montantEnchere);
@@ -103,17 +96,7 @@ public class EncheresManagerImpl implements EncheresManager {
 	@Override
 	public List<Enchere> getEncheresEnCours() throws BLLException {
 		try {
-		return dao.getEncheresEnCours();
-		}catch (DALException e) {
-			e.printStackTrace();
-			throw new BLLException(e);
-		}
-	}
-
-	@Override
-	public List<Enchere> selectByNomArticle(String nomArticle)throws BLLException{
-		try {
-			return dao.selectByNomArticle(nomArticle);
+			return dao.getEncheresEnCours();
 		} catch (DALException e) {
 			e.printStackTrace();
 			throw new BLLException(e);
@@ -121,16 +104,39 @@ public class EncheresManagerImpl implements EncheresManager {
 	}
 
 	@Override
-	public List<Enchere> selectByCategorie(String categorie)throws BLLException {
+	public List<Enchere> selectByNomArticle(String nomArticle) throws BLLException {
 		try {
-			return dao.selectByCategorie(categorie);
+			return dao.selectByNomArticle(nomArticle.toLowerCase().trim());
 		} catch (DALException e) {
 			e.printStackTrace();
 			throw new BLLException(e);
 		}
 	}
 
-	
+	@Override
+	public List<Enchere> selectByCategorie(Integer noCategorie) throws BLLException {
+		try {
+			return dao.selectByCategorie(noCategorie);
+		} catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e);
+		}
+	}
+
+	@Override
+	public List<Enchere> selectByEncherisseur(Integer noUtilisateur) throws BLLException {
+		try {
+			return dao.selectByUtilisateur(noUtilisateur);
+		} catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e);
+		}
+	}
+
+	@Override
+	public List<Enchere> selectByEncherisseurEtatVente(Integer noUtilisateur) throws BLLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
-

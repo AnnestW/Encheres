@@ -18,7 +18,7 @@ public class DAOCategorieImpl implements DAOCategorie {
 	private final static String SELECT_ALL = "SELECT no_categorie, libelle FROM categories";
 
 	@Override
-	public void insert(Categorie categorie) throws DALException, SQLException {
+	public void insert(Categorie categorie) throws DALException {
 		try (Connection cnx = JdbcTools.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 			pStmt.setString(1, categorie.getLibelle());
@@ -34,8 +34,6 @@ public class DAOCategorieImpl implements DAOCategorie {
 		}
 
 	}
-
-
 
 	@Override
 	public List<Categorie> getAllCategories() throws DALException {

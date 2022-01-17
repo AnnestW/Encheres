@@ -11,8 +11,8 @@ import fr.eni.ecole.encheres.dalEncheres.DALException;
 public interface DAOCategorie {
 
 
-	public void insert (Categorie categorie) throws DALException, SQLException;
-	public List<Categorie> getAllCategories()throws DALException, SQLException;
+	public void insert (Categorie categorie) throws DALException;
+	public List<Categorie> getAllCategories()throws DALException;
 	public Categorie mapCateg(ResultSet rs) throws SQLException;
 	
 

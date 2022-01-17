@@ -143,6 +143,15 @@ public class ArticleVendu {
 	public void setEtatVente(String etatVente) {
 		this.etatVente = etatVente;
 	}
+	
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
 
 	@Override
 	public String toString() {

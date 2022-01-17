@@ -32,21 +32,23 @@ public class DAOEncheresImpl implements DAOEnchere {
 				+ "												INNER JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur ";
 	private final static String INSERT = "INSERT INTO encheres (date_enchere, montant_enchere, no_article, no_utilisateur) VALUES(?,?,?,?)";
 	private final static String SELECT_ALL = SELECT_E_AND_JOIN_U_AND_AV;
-	private final static String SELECT_BY_NOMARTICLE = "SELECT e.no_enchere, e.date_enchere, e.montant_enchere, e.no_article, e.no_utilisateur "
-			+ "											FROM encheres e "
-			+ "											INNER JOIN articles_vendus av ON e.no_article = av.no_article "
-			+ "											INNER JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur "
-			+ "											WHERE nom_article=?";
+	private final static String SELECT_BY_NOMARTICLE = SELECT_E_AND_JOIN_U_AND_AV
+			+ "											WHERE av.nom_article =?";
 	private final static String UPDATE_ENCHERE = "UPDATE encheres SET montant_enchere = ? WHERE no_enchere = ?";
 	
 	
 	private final static String SELECT_BY_ART_ENCHERISSEUR = SELECT_E_AND_JOIN_U_AND_AV
 			+ "												WHERE e.no_article=? AND e.no_utilisateur = ?";
 
+	private final static String SELECT_BY_CATEGORIE = SELECT_E_AND_JOIN_U_AND_AV
+			+ "											WHERE c.no_categorie = ?";
+	private final static String SELECT_BY_UTILISATEUR = SELECT_E_AND_JOIN_U_AND_AV
+			+ "											WHERE u.no_utilisateur = ?";
+	
+	
 	DAOCategorie daoCat = DAOCategorieFactory.getInstance();
 	DAOUtilisateur daoUtil = DAOUtilisateurFactory.getInstance();
 	
-	//TODO rhoi pob enw colofn yn ôl
 	
 	
 	@Override
@@ -125,8 +127,8 @@ public class DAOEncheresImpl implements DAOEnchere {
 					ResultSet rs = pStmt.executeQuery();
 					while (rs.next()) {
 						enchere = mapEnchere(rs);
-					}
 					lstEnchereByNomArticle.add(enchere);
+					}
 				} catch(SQLException e){
 					e.printStackTrace(); 
 					throw new DALException(e.getMessage());
@@ -136,10 +138,67 @@ public class DAOEncheresImpl implements DAOEnchere {
 			
 
 	@Override
-	public List<Enchere> selectByCategorie(String categorie) throws DALException {
-		return null;
-	}
+	public List<Enchere> selectByCategorie(Integer noCategorie) throws DALException {
+		Enchere enchere = null;
+		List<Enchere> lstEnchereByCategorie = new ArrayList<Enchere>();
+				try (Connection cnx = JdbcTools.getConnection()) {
+					PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_CATEGORIE);
+					pStmt.setInt(1, noCategorie);
+					ResultSet rs = pStmt.executeQuery();
+					while (rs.next()) {
+						enchere = mapEnchere(rs);
+					lstEnchereByCategorie.add(enchere);
+					}
+					
+				} catch(SQLException e){
+					e.printStackTrace(); 
+					throw new DALException(e.getMessage());
+				}
+				return lstEnchereByCategorie;
+			}
+
+
+	@Override
+	public Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException {
+		Enchere enchere = null;
+		try (Connection cnx = JdbcTools.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ART_ENCHERISSEUR);
+			pStmt.setInt(1, article.getNoArticle());
+			pStmt.setInt(2, encherisseur.getNoUtilisateur());
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				enchere = mapEnchere(rs);
+			}
 	
+		} catch(SQLException e){
+			e.printStackTrace(); 
+			throw new DALException(e.getMessage());
+		}
+		return enchere;
+	}
+
+	@Override
+	public List<Enchere> selectByUtilisateur(Integer noUtilisateur) throws DALException {
+		Enchere enchere = null;
+		List<Enchere> lstEnchereByUtilisateur = new ArrayList<Enchere>();
+				try (Connection cnx = JdbcTools.getConnection()) {
+					PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_UTILISATEUR);
+					pStmt.setInt(1, noUtilisateur);
+					ResultSet rs = pStmt.executeQuery();
+					while (rs.next()) {
+						enchere = mapEnchere(rs);
+						lstEnchereByUtilisateur.add(enchere);
+					}
+					
+				} catch(SQLException e){
+					e.printStackTrace(); 
+					throw new DALException(e.getMessage());
+				}
+				return lstEnchereByUtilisateur;
+			}
+	
+	
+
 	public ArticleVendu mapArt (ResultSet rs) throws SQLException {
 		
 		 Integer noArticle = rs.getInt("no_article");
@@ -158,6 +217,26 @@ public class DAOEncheresImpl implements DAOEnchere {
 		 
 		 return articleVendu;
 	}
+	
+	@Override
+	public Utilisateur mapUtil(ResultSet rs) throws SQLException {
+		 Integer noUtilisateur = rs.getInt("no_utilisateur");
+		 String pseudo = rs.getString("pseudo");
+		 String nom = rs.getString("nom");
+		 String prenom = rs.getString("prenom");
+		 String email = rs.getString("email");
+		 String telephone = rs.getString("telephone");
+		 String rue = rs.getString("rue");
+		 String codePostal = rs.getString("code_postal");
+		 String ville = rs.getString("ville");
+		 String motDePasse = rs.getString("mot_de_passe");
+		 Integer credit = rs.getInt("credit");
+		 boolean administrateur = rs.getBoolean("administrateur");
+		
+		Utilisateur utilisateur = new Utilisateur(noUtilisateur,pseudo, nom, prenom, 
+				email, telephone, rue, codePostal,ville, motDePasse, credit, administrateur);
+		return utilisateur;
+	}
 
 	private Enchere mapEnchere(ResultSet rs) throws SQLException {
 		
@@ -169,25 +248,6 @@ public class DAOEncheresImpl implements DAOEnchere {
 		
 		Enchere enchere = new Enchere(noEnchere, article, dateEnchere,montantEnchere, encherisseur);
 		
-		return enchere;
-	}
-
-	@Override
-	public Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException {
-		Enchere enchere = null;
-		try (Connection cnx = JdbcTools.getConnection()) {
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ART_ENCHERISSEUR);
-			pStmt.setInt(1, article.getNoArticle());
-			pStmt.setInt(2, encherisseur.getNoUtilisateur());
-			ResultSet rs = pStmt.executeQuery();
-			while (rs.next()) {
-				enchere = mapEnchere(rs);
-			}
-	
-		} catch(SQLException e){
-			e.printStackTrace(); 
-			throw new DALException(e.getMessage());
-		}
 		return enchere;
 	}
 	
