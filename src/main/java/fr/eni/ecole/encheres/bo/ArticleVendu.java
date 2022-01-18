@@ -28,6 +28,21 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
+	
+
+	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, String etatVente, Categorie categorie) {
+		super();
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+		this.categorie = categorie;
+	}
 
 	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres, Integer miseAPrix, String etatVente,
 			LocalDate dateFinEncheres) {
@@ -66,6 +81,7 @@ public class ArticleVendu {
 		this.categorie = categorie;
 		this.utilisateur = utilisateur;
 	}
+
 
 	public Categorie getCategorie() {
 		return categorie;
@@ -156,25 +172,22 @@ public class ArticleVendu {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ArticleVendu [noArticle=");
-		builder.append(noArticle);
-		builder.append(", nomArticle=");
+		builder.append("\n Nom =");
 		builder.append(nomArticle);
-		builder.append(", description=");
+		builder.append("\n description=");
 		builder.append(description);
-		builder.append(", dateDebutEncheres=");
+		builder.append("\n dateDebutEncheres=");
 		builder.append(dateDebutEncheres);
-		builder.append(", dateFinEncheres=");
+		builder.append("\n dateFinEncheres=");
 		builder.append(dateFinEncheres);
-		builder.append(", miseAPrix=");
+		builder.append("\n miseAPrix=");
 		builder.append(miseAPrix);
-		builder.append(", prixVente=");
+		builder.append("prixVente=");
 		builder.append(prixVente);
-		builder.append(", etatVente=");
+		builder.append("etatVente=");
 		builder.append(etatVente);
 		builder.append(", categorie=");
-		builder.append(categorie);
-		builder.append("]");
+		builder.append(categorie.getLibelle());
 		return builder.toString();
 	}
 

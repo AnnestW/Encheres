@@ -28,7 +28,6 @@ public class Enchere {
 	}
 
 
-
 	public Enchere(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 			Utilisateur encherisseur) {
 		this.articleAVendre = articleAVendre;

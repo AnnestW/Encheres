@@ -2,7 +2,9 @@ package fr.eni.ecole.encheres.bllEncheres;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.eni.ecole.encheres.bo.ArticleVendu;
 import fr.eni.ecole.encheres.bo.Enchere;
@@ -58,13 +60,6 @@ public class EncheresManagerImpl implements EncheresManager {
 
 	}
 
-//	//Méthode en charge d'afficher un message d'erreur si l'utilisateur choisit une date qui est avant/après la période de l'enchère
-//	public void verificationDate(ArticleVendu article, LocalDate dateEnchere, BLLException e) {
-//		if (dateEnchere.isBefore(article.getDateDebutEncheres()) || dateEnchere.isAfter(article.getDateFinEncheres())) {
-//			e.ajouterErreur(new ParameterException("La date de l'enchère ne peut pas être avant le début de l'enchère ni après la fin de l'enchère"));
-//		}
-//		}
-
 	public boolean verificationMontant(ArticleVendu article, Integer montant_enchere, BLLException e) {
 		boolean verif = true;
 		if (montant_enchere <= article.getMiseAPrix()) {
@@ -75,16 +70,8 @@ public class EncheresManagerImpl implements EncheresManager {
 		return verif;
 	}
 
-//	public void verificationEtatVente(ArticleVendu article, BLLException e) {
-//		if (!"enCours".equals(article.getEtatVente())) {
-//			e.ajouterErreur(new ParameterException("Cet article n'est pas à vendre"));
-//			
-//		}
-//		
-//	}
-
 	@Override
-	public List<Enchere> getAllEncheres() throws BLLException {
+	public List<ArticleVendu> getAllEncheres() throws BLLException {
 		try {
 			return dao.getAllEncheres();
 		} catch (DALException e) {
@@ -94,7 +81,7 @@ public class EncheresManagerImpl implements EncheresManager {
 	}
 
 	@Override
-	public List<Enchere> getEncheresEnCours() throws BLLException {
+	public List<ArticleVendu> getEncheresEnCours() throws BLLException {
 		try {
 			return dao.getEncheresEnCours();
 		} catch (DALException e) {
@@ -103,40 +90,18 @@ public class EncheresManagerImpl implements EncheresManager {
 		}
 	}
 
+
 	@Override
-	public List<Enchere> selectByNomArticle(String nomArticle) throws BLLException {
+	public List<ArticleVendu> getEnchereByFilter(String nomArticle, Integer noCategorie, Integer noEncherisseur,
+			String etatVente, Integer noVendeur) throws BLLException {
+		List<ArticleVendu> liste = new ArrayList<ArticleVendu>();
 		try {
-			return dao.selectByNomArticle(nomArticle.toLowerCase().trim());
+			liste = dao.selectByFilter(nomArticle != null ? nomArticle.toLowerCase().trim() : nomArticle, noCategorie,
+					noEncherisseur, etatVente, noVendeur);
 		} catch (DALException e) {
 			e.printStackTrace();
 			throw new BLLException(e);
 		}
+		return liste = liste.stream().distinct().collect(Collectors.toList());
 	}
-
-	@Override
-	public List<Enchere> selectByCategorie(Integer noCategorie) throws BLLException {
-		try {
-			return dao.selectByCategorie(noCategorie);
-		} catch (DALException e) {
-			e.printStackTrace();
-			throw new BLLException(e);
-		}
-	}
-
-	@Override
-	public List<Enchere> selectByEncherisseur(Integer noUtilisateur) throws BLLException {
-		try {
-			return dao.selectByUtilisateur(noUtilisateur);
-		} catch (DALException e) {
-			e.printStackTrace();
-			throw new BLLException(e);
-		}
-	}
-
-	@Override
-	public List<Enchere> selectByEncherisseurEtatVente(Integer noUtilisateur) throws BLLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
