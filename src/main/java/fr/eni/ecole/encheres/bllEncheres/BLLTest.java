@@ -33,8 +33,10 @@ public class BLLTest {
 		
 		// System.out.println(mgr.selectByCategorie(3));
 		 
-		System.out.println(mgr.selectByNomArticle("skate"));
-
+		//System.out.println(mgr.selectByNomArticle("skate"));
+		
+		//System.out.println(mgr.getEnchereByFilter(null, null));
+		System.out.println(mgr.getEnchereByFilter(null, null, null, "Termine", 1));
 	}
 
 }
