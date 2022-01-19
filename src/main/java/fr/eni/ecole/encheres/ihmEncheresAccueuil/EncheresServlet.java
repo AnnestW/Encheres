@@ -1,6 +1,7 @@
 package fr.eni.ecole.encheres.ihmEncheresAccueuil;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class EncheresServlet extends HttpServlet {
 
 	private Utilisateur getUtilisateurConnecte() throws ServletException, IOException {
 		Utilisateur utilisateurConnecte = new Utilisateur();
-		utilisateurConnecte.setNoUtilisateur(2);
+		utilisateurConnecte.setNoUtilisateur(4);
 		return utilisateurConnecte;
+	
 	}
 //	HttpSession session = request.getSession(false);
 //	if (session == null || session.getAttribute("userConnected") == null) {
@@ -79,33 +81,54 @@ public class EncheresServlet extends HttpServlet {
 			Integer noEncherisseur = null;
 			Integer noVendeur = null;
 			
-			if (request.getParameter("nomArticle") != null || request.getParameter("choisir_categorie") !=null) {
+			if (request.getParameter("nomArticle") != null || request.getParameter("choisir_categorie")!=null) {
 				 etatVente = "EN_COURS";
 			}
 			
-			if (request.getParameter("encheresEnCours") !=null) {
-				 etatVente = "EN_COURS";
-				
-			}
-			if (request.getParameter("mesEncheres") !=null) {
+			String[] filtre = request.getParameterValues("filtre");
+			PrintWriter out = response.getWriter();
+			
+			for (String s : filtre) {
+				if (s != null && s=="encheresEnCours") {
+					 etatVente = "EN_COURS";
+			} if (s != null && s == "mesEncheres") {
 				noEncherisseur = getUtilisateurConnecte().getNoUtilisateur();
+			}if (s != null && s == "encheresRemportees") {
+				etatVente = "TERMINE";
+			}if (s != null && s  =="ventesEnCours") {
+				noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+				etatVente = "EN_COURS";
+			}if (s != null && s =="ventesNonDebutees")  {
+				noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+				etatVente = "NON_DEBUTE";
+			}if (s != null && s =="ventesTerminees")  {
+				noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+				etatVente = "TERMINE";
 			}
-				if (request.getParameter("encheresRemportees") !=null) {
-					
-					etatVente = "TERMINE";
-				}
-				if (request.getParameter("ventesEnCours") !=null) {
-					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
-					etatVente = "EN_COURS";
-				}
-				if (request.getParameter("ventesNonDebutees") !=null) {
-					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
-					etatVente = "NON_DEBUTE";
-				}
-				if (request.getParameter("ventesTerminees") !=null) {
-					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
-					etatVente = "TERMINE";
-				}
+			}
+			
+//			if (request.getParameter("encheresEnCours") !=null) {
+//				 etatVente = "EN_COURS";
+//				
+//			}
+//			if (request.getParameter("mesEncheres") !=null) {
+//				noEncherisseur = getUtilisateurConnecte().getNoUtilisateur();
+//			}
+//				if (request.getParameter("encheresRemportees") !=null) {
+//					etatVente = "TERMINE";
+//				}
+//				if (request.getParameter("ventesEnCours") !=null) {
+//					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+//					etatVente = "EN_COURS";
+//				}
+//				if (request.getParameter("ventesNonDebutees") !=null) {
+//					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+//					etatVente = "NON_DEBUTE";
+//				}
+//				if (request.getParameter("ventesTerminees") !=null) {
+//					noVendeur = getUtilisateurConnecte().getNoUtilisateur();
+//					etatVente = "TERMINE";
+//				}
 			
 			try {
 				modelEncheres.setLstEncheres(mgr.getEnchereByFilter(

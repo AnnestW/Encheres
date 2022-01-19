@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.ecole.encheres.bll.UtilisateurManager;
 import fr.eni.ecole.encheres.bll.UtilisateurManagerSingleton;
-import fr.formation.vote.bo.Votant;
+
 
 /**
  * Servlet implementation class CreerCompteServlet

@@ -6,7 +6,7 @@ import fr.eni.ecole.encheres.dal.DALException;
 public interface UtilisateurManager {
 
 	
-	public void chercherUtilisateur(String login, String motDePasse);
+	public Utilisateur chercherUtilisateur(String login, String motDePasse) throws BLLException;
 	
 		
 	

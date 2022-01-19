@@ -1,5 +1,7 @@
 package fr.eni.ecole.encheres.bll;
 
+import java.sql.SQLException;
+
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dal.DALException;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
@@ -10,10 +12,13 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 	private UtilisateurDAO dao = UtilisateurDAOFactory.getInstance();
 
 	@Override
-	public void chercherUtilisateur(String login, String motDePasse) {
-		
-		dao.chercherUtilisateur(login, motDePasse);
-		
+	public Utilisateur chercherUtilisateur(String login, String motDePasse) throws BLLException {
+		try {
+		return dao.chercherUtilisateur(login, motDePasse);
+		}catch (DALException e) {
+			e.printStackTrace();
+			throw new BLLException(e.getMessage());
+		}
 	
 	}
 

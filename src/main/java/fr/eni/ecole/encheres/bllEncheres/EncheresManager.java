@@ -6,7 +6,7 @@ import java.util.List;
 import fr.eni.ecole.encheres.bo.ArticleVendu;
 import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.dalEncheres.DALException;
+
 
 public interface EncheresManager {
 	public void encherir(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,

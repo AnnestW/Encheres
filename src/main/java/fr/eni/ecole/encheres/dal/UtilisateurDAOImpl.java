@@ -30,7 +30,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		String ville = rs.getString("ville");
 		String motDePasse = rs.getString("motDePasse");
 		Integer credit = rs.getInt("credit");
-		String administrateur = rs.getString("administrateur");
+		boolean administrateur = rs.getBoolean("administrateur");
 		
 		Utilisateur utilisateur1 = null;
 		

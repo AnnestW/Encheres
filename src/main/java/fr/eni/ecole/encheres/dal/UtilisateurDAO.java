@@ -8,8 +8,7 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 public interface UtilisateurDAO {
 
 	
-	public Utilisateur chercherUtilisateur(String login, String motDePasse);
-	
+	public Utilisateur chercherUtilisateur(String login, String motDePasse) throws DALException;
 		
 	
 	public Utilisateur selectByPseudo(String pseudo) throws DALException;

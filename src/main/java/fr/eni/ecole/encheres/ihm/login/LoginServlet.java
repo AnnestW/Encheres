@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.ecole.encheres.bll.BLLException;
 import fr.eni.ecole.encheres.bll.UtilisateurManager;
 import fr.eni.ecole.encheres.bll.UtilisateurManagerSingleton;
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.dal.UtilisateurDAOImpl;
-import fr.formation.vote.ihm.login.LoginModel;
+import fr.eni.ecole.encheres.dal.DALException;
+
 
 /**
  * Servlet implementation class SeConnecterServlet
@@ -34,6 +35,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utilisateur utilisateur = new Utilisateur();
+		UtilisateurManager mgr = UtilisateurManagerSingleton.getInstance();
 		
 		String EcranLogin = "/WEB-INT/login.jsp";
 		
@@ -43,10 +45,15 @@ public class LoginServlet extends HttpServlet {
 			String login = request.getParameter("pseudo");
 			String motDePasse = request.getParameter("motDePasse");
 			
-			Utilisateur user = UtilisateurDAOImpl.chercherUtilisateur(login, motDePasse);
+			Utilisateur user = null;
+			try {
+				user = mgr.chercherUtilisateur(login, motDePasse);
+			} catch (BLLException e) {
+				e.printStackTrace();
+			} 
 			
 			if (user ==null) {
-				String errorMessage = "Il y a d'erreur";
+				String errorMessage = "Il y a eu une erreur";
 				request.setAttribute("errorMessage", errorMessage);
 				
 				request.getRequestDispatcher(EcranLogin).forward(request, response);
