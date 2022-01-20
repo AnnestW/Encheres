@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+.container {
+  position: relative;
+}
+.topright {
+  position: absolute;
+  top: 2px;
+  right: 16px;
+  font-size: 18px;
+}
+
+#listEncheres {
+	display:flex;
+	justify-content: space-around;
+}
+.enchere {
+  width: 200px;
+  border : 1px solid black;
+  padding: 15px;
+}

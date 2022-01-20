@@ -27,4 +27,3 @@ package fr.eni.ecole.encheres.dalEncheres;
 	}
 
 
-

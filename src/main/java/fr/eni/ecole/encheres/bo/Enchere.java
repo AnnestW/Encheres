@@ -10,13 +10,9 @@ public class Enchere {
 	private Integer montantEnchere;
 	private Utilisateur encherisseur;
 
-
-	
 	public Enchere() {
 
 	}
-	
-	
 
 	public Enchere(Integer noEnchere, ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 			Utilisateur encherisseur) {
@@ -27,7 +23,6 @@ public class Enchere {
 		this.encherisseur = encherisseur;
 	}
 
-
 	public Enchere(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 			Utilisateur encherisseur) {
 		this.articleAVendre = articleAVendre;
@@ -36,7 +31,6 @@ public class Enchere {
 		this.encherisseur = encherisseur;
 	}
 
-	
 //
 //	public Enchere(Integer noEnchere, ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere,
 //			Utilisateur encherisseur) {
@@ -67,8 +61,6 @@ public class Enchere {
 	public void setArticleAVendre(ArticleVendu articleAVendre) {
 		this.articleAVendre = articleAVendre;
 	}
-	
-	
 
 	public Utilisateur getEncherisseur() {
 		return encherisseur;
@@ -77,7 +69,7 @@ public class Enchere {
 	public void setEncherisseur(Utilisateur encherisseur) {
 		this.encherisseur = encherisseur;
 	}
-	
+
 	public Integer getNoArticle() {
 		return articleAVendre.getNoArticle();
 	}
@@ -85,25 +77,18 @@ public class Enchere {
 	public Integer getNoUtil() {
 		return encherisseur.getNoUtilisateur();
 	}
-	
-	
 
 	public Integer getNoEnchere() {
 		return noEnchere;
 	}
 
-
-
 	public void setNoEnchere(Integer noEnchere) {
 		this.noEnchere = noEnchere;
 	}
 
-
 	@Override
 	public String toString() {
-		return articleAVendre.getNomArticle() + "\n" +" Prix ="
-				+ montantEnchere + "\n Vendeur : " + articleAVendre.getUtilisateur().getPseudo() + "\n" ;
+		return articleAVendre.getNomArticle() + "\n" + " Prix =" + montantEnchere + "\n Vendeur : "
+				+ articleAVendre.getUtilisateur().getPseudo() + "\n";
 	}
-
-
 }

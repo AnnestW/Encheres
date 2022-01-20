@@ -2,15 +2,6 @@ package fr.eni.ecole.encheres.bo;
 
 public class Utilisateur {
 	
-	/*
-	 * 
-	 * noUtilisateur pseudo
-nom
-prenom
-email telephone
-rue codePostal ville motDePasse credit administrateur
-	 */
-	
 	private Integer noUtilisateur;
 	private String pseudo;
 	private String nom;
@@ -21,7 +12,7 @@ rue codePostal ville motDePasse credit administrateur
 	private String codePostal;
 	private String ville;
 	private String motDePasse;
-	private Integer credit;
+	private Integer credit = 0;
 	private boolean administrateur = false;
 	
 	

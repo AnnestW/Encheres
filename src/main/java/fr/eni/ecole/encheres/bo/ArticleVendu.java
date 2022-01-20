@@ -3,6 +3,7 @@ package fr.eni.ecole.encheres.bo;
 import java.time.LocalDate;
 
 public class ArticleVendu {
+	
 	private Integer noArticle;
 	private String nomArticle;
 	private String description;
@@ -12,12 +13,14 @@ public class ArticleVendu {
 	private Integer prixVente;
 	private String etatVente;
 	private Categorie categorie;
+	private Retrait lieuRetrait;
 	private Utilisateur utilisateur;
 	
 	public ArticleVendu() {
-		
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	
+
 	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
 			Integer miseAPrix, String etatVente) {
 		this.noArticle = noArticle;
@@ -168,6 +171,15 @@ public class ArticleVendu {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
+	
+
+	public Retrait getLieuRetrait() {
+		return lieuRetrait;
+	}
+
+	public void setLieuRetrait(Retrait lieuRetrait) {
+		this.lieuRetrait = lieuRetrait;
+	}
 
 	@Override
 	public String toString() {
@@ -191,8 +203,4 @@ public class ArticleVendu {
 		return builder.toString();
 	}
 
-
-
-	
-	
 }

@@ -1,4 +1,4 @@
-package fr.eni.ecole.encheres.ihmEncheresAccueuil;
+package fr.eni.ecole.encheres.ihm.encheres;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 public class ModelEncheres {
 	private Enchere enchere;
 	private Utilisateur utilisateur;
-	private ArticleVendu article;
+	private ArticleVendu articleAVendre;
 	private Categorie categorie;
 	private List<ArticleVendu> lstEncheres= new ArrayList<ArticleVendu>();
-	private List<Categorie> lstCategories= new ArrayList<Categorie>();;
+	private List<Categorie> lstCategories= new ArrayList<Categorie>();
 	private String message;
 	
 	
@@ -23,15 +23,11 @@ public class ModelEncheres {
 	}
 
 
-	
-
-
-	public ModelEncheres(Enchere enchere, Utilisateur utilisateur, ArticleVendu article, Categorie categorie,
+	public ModelEncheres(Enchere enchere, Utilisateur utilisateur, ArticleVendu articleAVendre, Categorie categorie,
 			List<ArticleVendu> lstEncheres,List<Categorie> lstCategories, String message) {
-		super();
 		this.enchere = enchere;
 		this.utilisateur = utilisateur;
-		this.article = article;
+		this.articleAVendre = articleAVendre;
 		this.categorie = categorie;
 		this.lstEncheres = lstEncheres;
 		this.lstCategories = lstCategories;
@@ -56,9 +52,7 @@ public class ModelEncheres {
 	public Utilisateur getUtilisateurur() {
 		return utilisateur;
 	}
-	public ArticleVendu getArticle() {
-		return article;
-	}
+	
 	public List<ArticleVendu> getLstEncheres() {
 		return lstEncheres;
 
@@ -72,9 +66,8 @@ public class ModelEncheres {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-	public void setArticle(ArticleVendu article) {
-		this.article = article;
-	}
+	
+	
 	public void setLstEncheres(List<ArticleVendu> lstEncheresEnCours) {
 		this.lstEncheres = lstEncheresEnCours;
 	}
@@ -98,7 +91,13 @@ public class ModelEncheres {
 		this.lstCategories = lstCategories;
 	}
 
+	public ArticleVendu getArticleAVendre() {
+		return articleAVendre;
+	}
 
+	public void setArticleAVendre(ArticleVendu articleAVendre) {
+		this.articleAVendre = articleAVendre;
+	}
 
 
 
@@ -106,7 +105,7 @@ public class ModelEncheres {
 
 	@Override
 	public String toString() {
-		return "ModelEncheres [enchere=" + enchere + ", encherisseur=" + utilisateur + ", article=" + article
+		return "ModelEncheres [enchere=" + enchere + ", encherisseur=" + utilisateur + ", articleAVendre=" + articleAVendre
 				+ ", categorie=" + categorie + ", lstEncheresEnCours=" + lstEncheres
 				+ ", message=" + message + "]";
 	}

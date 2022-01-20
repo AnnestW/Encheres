@@ -12,14 +12,15 @@ import java.util.List;
 
 
 import fr.eni.ecole.encheres.dal.JdbcTools;
+import fr.eni.ecole.encheres.dal.UtilisateurDAO;
+import fr.eni.ecole.encheres.dal.UtilisateurDAOFactory;
 import fr.eni.ecole.encheres.bo.ArticleVendu;
 import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorie;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorieFactory;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateur;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateurFactory;
+
 
 public class DAOEncheresImpl implements DAOEnchere {
 
@@ -46,18 +47,20 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	private final static String FILTER_BY_ETAT_VENTE = "av.etat_vente = ?";
 	private final static String FILTER_BY_VENDEUR = "av.no_utilisateur = ?";
 	private static final String SELECT_ALL_FROM_ARTICLE = "SELECT DISTINCT av.no_article, av.nom_article, av.description, av.date_debut_encheres, "
-			+ "												av.date_fin_encheres, av.prix_initial, av.prix_vente, av.etat_vente, c.no_categorie, c.libelle, u.no_utilisateur"
+			+ "												av.date_fin_encheres, av.prix_initial, av.prix_vente, av.etat_vente, c.no_categorie, c.libelle, u.no_utilisateur,"
+			+ "												v.*"
 			+ "												FROM articles_vendus av"
 			+ "												LEFT JOIN encheres e ON e.no_article = av.no_article "
 			+ "												LEFT JOIN categories c ON c.no_categorie = av.no_categorie "
-			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur";
+			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur"
+			+ "												INNER JOIN utilisateurs v ON v.no_utilisateur = av.no_utilisateur";
 	private final static String FILTER_BY_GAGNANT = "e.montant_enchere = av.prix_vente";	
 	DAOCategorie daoCat = DAOCategorieFactory.getInstance();
-	DAOUtilisateur daoUtil = DAOUtilisateurFactory.getInstance();
+	UtilisateurDAO daoUtil = UtilisateurDAOFactory.getInstance();
 
 	@Override
 	public void insert(Enchere enchere) throws DALException {
-		Date date = java.sql.Date.valueOf(enchere.getDateEnchere());
+		Date date = Date.valueOf(enchere.getDateEnchere());
 		try (Connection cnx = JdbcTools.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -80,9 +83,9 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	public List<ArticleVendu> getEncheresEnCours() throws DALException {
 		List<ArticleVendu> lstAllEncheres = getAllEncheres();
 		List<ArticleVendu> lstEncheresEnCours = new ArrayList<ArticleVendu>();
-		for (ArticleVendu article : lstAllEncheres) {
-			if (article.getEtatVente().equalsIgnoreCase("EN_COURS")) {
-				lstEncheresEnCours.add(article);
+		for (ArticleVendu articleAVendre : lstAllEncheres) {
+			if (articleAVendre.getEtatVente().equalsIgnoreCase("EN_COURS")) {
+				lstEncheresEnCours.add(articleAVendre);
 			}
 		}
 		return lstEncheresEnCours;
@@ -96,8 +99,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 			Statement stmt = cnx.createStatement();
 			ResultSet rs = stmt.executeQuery(SELECT_ALL_FROM_ARTICLE);
 			while (rs.next()) {
-				ArticleVendu article = mapArt(rs);
-				lstAllEncheres.add(article);
+				ArticleVendu articleAVendre = mapArt(rs);
+				lstAllEncheres.add(articleAVendre);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,7 +129,7 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	@Override
 	public List<ArticleVendu> selectByFilter(String nomArticle, Integer noCategorie, Integer noEncherisseur,
 			String etatVente, Integer noVendeur) throws DALException {
-		ArticleVendu article = null;
+		ArticleVendu articleAVendre = null;
 		// String query = SELECT_ALL;
 		String query = SELECT_ALL_FROM_ARTICLE;
 		int i = 1;
@@ -177,8 +180,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				article = mapArt(rs);
-				liste.add(article);
+				articleAVendre = mapArt(rs);
+				liste.add(articleAVendre);
 
 			}
 
@@ -202,48 +205,49 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		Integer prixVente = rs.getInt("prix_vente");
 		String etatVente = rs.getString("etat_vente");
 		Categorie categorie = daoCat.mapCateg(rs);
+		Utilisateur vendeur = daoUtil.map(rs);
 
 		ArticleVendu articleVendu = new ArticleVendu(noArticle, nomArticle, description, dateDebutEncheres,
-				dateFinEncheres, miseAPrix, prixVente, etatVente, categorie);
+				dateFinEncheres, miseAPrix, prixVente, etatVente, categorie, vendeur);
 
 		return articleVendu;
 	}
 
-//	@Override
-//	public Utilisateur mapUtil(ResultSet rs) throws SQLException {
-//		Integer noUtilisateur = rs.getInt("no_utilisateur");
-//		String pseudo = rs.getString("pseudo");
-//		String nom = rs.getString("nom");
-//		String prenom = rs.getString("prenom");
-//		String email = rs.getString("email");
-//		String telephone = rs.getString("telephone");
-//		String rue = rs.getString("rue");
-//		String codePostal = rs.getString("code_postal");
-//		String ville = rs.getString("ville");
-//		String motDePasse = rs.getString("mot_de_passe");
-//		Integer credit = rs.getInt("credit");
-//		boolean administrateur = rs.getBoolean("administrateur");
-//
-//		Utilisateur utilisateur = new Utilisateur(noUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal,
-//				ville, motDePasse, credit, administrateur);
-//		return utilisateur;
-//	}
-//
+	@Override
+	public Utilisateur mapUtil(ResultSet rs) throws SQLException {
+		Integer noUtilisateur = rs.getInt("no_utilisateur");
+		String pseudo = rs.getString("pseudo");
+		String nom = rs.getString("nom");
+		String prenom = rs.getString("prenom");
+		String email = rs.getString("email");
+		String telephone = rs.getString("telephone");
+		String rue = rs.getString("rue");
+		String codePostal = rs.getString("code_postal");
+		String ville = rs.getString("ville");
+		String motDePasse = rs.getString("mot_de_passe");
+		Integer credit = rs.getInt("credit");
+		boolean administrateur = rs.getBoolean("administrateur");
+
+		Utilisateur utilisateur = new Utilisateur(noUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal,
+				ville, motDePasse, credit, administrateur);
+		return utilisateur;
+	}
+
 	private Enchere mapEnchere(ResultSet rs) throws SQLException {
 
 		Integer noEnchere = rs.getInt("no_enchere");
-		ArticleVendu article = mapArt(rs);
+		ArticleVendu articleAVendre = mapArt(rs);
 		LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
 		Integer montantEnchere = rs.getInt("montant_enchere");
-		Utilisateur encherisseur = daoUtil.mapUtil(rs);
+		Utilisateur encherisseur = daoUtil.map(rs);
 
-		Enchere enchere = new Enchere(noEnchere, article, dateEnchere, montantEnchere, encherisseur);
+		Enchere enchere = new Enchere(noEnchere, articleAVendre, dateEnchere, montantEnchere, encherisseur);
 
 		return enchere;
 	}
 
 	@Override
-	public Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException {
+	public Enchere selectByArticleEncherisseur(ArticleVendu articleAVendre, Utilisateur encherisseur) throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
