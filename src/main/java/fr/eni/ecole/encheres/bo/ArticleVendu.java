@@ -1,6 +1,8 @@
 package fr.eni.ecole.encheres.bo;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ArticleVendu {
 	
@@ -116,6 +118,10 @@ public class ArticleVendu {
 
 	public LocalDate getDateFinEncheres() {
 		return dateFinEncheres;
+	}
+	public String getDateFinEncheresFormatFr() {
+		String formattedDate = dateFinEncheres.format(DateTimeFormatter.ofPattern("dd-MMM-yy"));
+		return formattedDate;
 	}
 
 	public Integer getMiseAPrix() {

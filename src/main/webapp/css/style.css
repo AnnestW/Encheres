@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+
+
+body {
+  font-family: Helvetica (sans-serif);
+}
+
 .container {
   position: relative;
 }
@@ -7,15 +13,67 @@
   position: absolute;
   top: 2px;
   right: 16px;
-  font-size: 18px;
+  font-size: 16px;
+}
+#listTitle {
+	font-size: 25px;
+	font-family:sans-serif;
+	position: absolute;
+	top: 50px;
+	left: 370px;
+}
+#titleFiltres {
+	padding:10px;
 }
 
 #listEncheres {
 	display:flex;
 	justify-content: space-around;
+
 }
 .enchere {
-  width: 200px;
+	font-family:Helvetica (sans-serif);
+  width: 250px;
   border : 1px solid black;
   padding: 15px;
+}
+.listeTitle {
+	justify-content: center;
+}
+.checkboxes {
+	display:flex;
+	gap: 10px;
+	column-gap: 20px;
+	row-gap:20px;
+}
+.filtresGeneraux {
+	padding: 15px;
+	margin-left:auto;
+}
+#bouton {
+	padding: 10px;
+	position: absolute;
+	top: 150px; 
+	left: 300px;
+	font-size: 25px;
+	border-radius: 15px;
+}
+#nomArticle {
+  border-radius: 15px;
+  width: 170px;
+  height: 30px;
+ 
+  border-color: grey;
+}
+#select {
+	font-family:sans-serif;
+	border-radius: 25px;
+}
+.achatVente {
+	display: flex;
+	
+}
+#v {
+	position: relativ;
+	left:200px;
 }

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import fr.eni.ecole.encheres.dal.JdbcTools;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAOFactory;
@@ -21,21 +20,11 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorie;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorieFactory;
 
-
 public class DAOEncheresImpl implements DAOEnchere {
 
-public static final String ETAT_TERMINE = "TERMINE";
-public static final String ETAT_EN_COURS = "EN_COURS";
-public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
-//	private static final String SELECT_ALL_ENCHERES = "SELECT av.nom_article, av.description, av.date_debut_encheres,"
-//			+"										av.date_fin_encheres, av.prix_initial, av.prix_vente, av.etat_vente,"
-//			+"										c.no_categorie, c.libelle, u.no_utilisateur"
-//			+"										FROM encheres e"
-//			+"										LEFT JOIN articles_vendus av ON e.no_article = av.no_article"
-//			+"										LEFT JOIN categories c ON c.no_categorie = av.no_categorie"	
-//			+"										LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur"
-//			+"										WHERE e.montant_enchere = av.prix_vente and u.no_utilisateur = ?";		
-
+	public static final String ETAT_TERMINE = "TERMINE";
+	public static final String ETAT_EN_COURS = "EN_COURS";
+	public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	private final static String INSERT = "INSERT INTO encheres (date_enchere, montant_enchere, no_article, no_utilisateur) VALUES(?,?,?,?)";
 	private final static String UPDATE_ENCHERE = "UPDATE encheres SET montant_enchere = ? WHERE no_enchere = ?";
 	private final static String WHERE = " WHERE 1=1 ";
@@ -54,7 +43,7 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 			+ "												LEFT JOIN categories c ON c.no_categorie = av.no_categorie "
 			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur"
 			+ "												INNER JOIN utilisateurs v ON v.no_utilisateur = av.no_utilisateur";
-	private final static String FILTER_BY_GAGNANT = "e.montant_enchere = av.prix_vente";	
+	private final static String FILTER_BY_GAGNANT = "e.montant_enchere = av.prix_vente";
 	DAOCategorie daoCat = DAOCategorieFactory.getInstance();
 	UtilisateurDAO daoUtil = UtilisateurDAOFactory.getInstance();
 
@@ -91,7 +80,6 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		return lstEncheresEnCours;
 	}
 
-
 	@Override
 	public List<ArticleVendu> getAllEncheres() throws DALException {
 		List<ArticleVendu> lstAllEncheres = new ArrayList<ArticleVendu>();
@@ -108,8 +96,6 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		}
 		return lstAllEncheres;
 	}
-
-
 
 	@Override
 	public void updateEnchere(Enchere enchere, Integer montant) throws DALException {
@@ -137,7 +123,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 
 		try (Connection cnx = JdbcTools.getConnection()) {
 
-			if (nomArticle != null || noCategorie != null || etatVente != null || noEncherisseur != null || noVendeur !=null) {
+			if (nomArticle != null || noCategorie != null || etatVente != null || noEncherisseur != null
+					|| noVendeur != null) {
 				query += WHERE;
 				if (nomArticle != null) {
 					query += AND + FILTER_BY_NOM_ARTICLE;
@@ -157,8 +144,6 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 				if (noVendeur != null) {
 					query += AND + FILTER_BY_VENDEUR;
 				}
-				
-				
 
 			}
 			PreparedStatement pStmt = cnx.prepareStatement(query);
@@ -177,7 +162,7 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 			if (noVendeur != null) {
 				pStmt.setInt(i++, noVendeur);
 			}
-		
+
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				articleAVendre = mapArt(rs);
@@ -247,8 +232,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	}
 
 	@Override
-	public Enchere selectByArticleEncherisseur(ArticleVendu articleAVendre, Utilisateur encherisseur) throws DALException {
-		// TODO Auto-generated method stub
+	public Enchere selectByArticleEncherisseur(ArticleVendu articleAVendre, Utilisateur encherisseur)
+			throws DALException {
 		return null;
 	}
 

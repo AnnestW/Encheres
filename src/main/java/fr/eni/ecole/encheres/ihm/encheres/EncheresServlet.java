@@ -2,6 +2,8 @@ package fr.eni.ecole.encheres.ihm.encheres;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,23 +41,21 @@ public class EncheresServlet extends HttpServlet {
 		String nextScreen = "WEB-INF/Encheres.jsp";
 		EncheresManager mgr = EncheresSingl.getInstance();
 		CategorieManager mgrCat = CategorieManagerSingl.getInstance();
-		boolean userConnected = true;
-		Utilisateur user = null;
+		boolean userConnected = false;
+		
 		
 		HttpSession session = request.getSession();
-		
-		 if (session.getAttribute("user") != null) {
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
+		//session.setAttribute("user", user);
+		if (user != null) {
 			userConnected = true;
-			user = (Utilisateur) session.getAttribute("user");
-		} 
-
+			 }
+		 
 		try {
 			modelEncheres.setLstEncheres(mgr.getEncheresEnCours());
 		} catch (BLLException e1) {
 			e1.printStackTrace();
 		}
-
-	
 		try {
 			modelEncheres.setLstCategories(mgrCat.getAllCategories());
 		} catch (BLLException e) {
@@ -63,8 +63,7 @@ public class EncheresServlet extends HttpServlet {
 			modelEncheres.setMessage(e.toString());
 		}
 		
-
-
+		
 		if (request.getParameter("Rechercher") != null) {
 			String choixCat = request.getParameter("choisir_categorie");
 			String nomArt = request.getParameter("nomArticle");
@@ -103,6 +102,11 @@ public class EncheresServlet extends HttpServlet {
 				modelEncheres.setMessage(e.toString());
 			}
 	
+		}
+		 
+		
+		if(request.getParameter("Logout") != null) {
+			nextScreen = "LogoutServlet";
 		}
 
 

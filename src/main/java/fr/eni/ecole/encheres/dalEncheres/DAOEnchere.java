@@ -1,5 +1,7 @@
 package fr.eni.ecole.encheres.dalEncheres;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import fr.eni.ecole.encheres.bo.ArticleVendu;
@@ -20,5 +22,6 @@ public interface DAOEnchere {
 //	public List<Enchere> selectByVendeur(Integer noUtilisateur)throws DALException;
 	public List <ArticleVendu> selectByFilter(String nomArticle, Integer noCategorie, Integer noEncherisseur, String etatVente, Integer noVendeur)throws DALException;
 	Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException;
+	Utilisateur mapUtil(ResultSet rs) throws SQLException;
 
 }

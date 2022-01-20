@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.ecole.encheres.bll.BLLException;
 import fr.eni.ecole.encheres.bll.UtilisateurManager;
@@ -38,48 +39,42 @@ public class LoginServlet extends HttpServlet {
 		UtilisateurManager mgr = UtilisateurManagerSingleton.getInstance();
 		
 		String nextScreen = "/WEB-INF/login.jsp";
+		HttpSession session=request.getSession(true);
 		
 		if(request.getParameter("connexion")!= null) {
-		
-//	
 			String pseudo = request.getParameter("login");
 			String motDePasse = request.getParameter("motDePasse");
-			
-			Utilisateur user = null;
 			try {
-				user = mgr.chercherUtilisateur(pseudo, motDePasse);
+				Utilisateur	user = mgr.chercherUtilisateur(pseudo, motDePasse);
+				nextScreen = "EncheresServlet";
+				session.setAttribute("user", user);
 			} catch (BLLException e) {
 				e.printStackTrace();
 			} 
-			request.getSession().setAttribute("user", user);
-			nextScreen = "EncheresServlet";
 			
-			if (user ==null) {
-				String errorMessage = "Il y a eu une erreur";
-				request.setAttribute("errorMessage", errorMessage);
-				
-			}
+		}
+			
+			
+//			if (user ==null) {
+//				String errorMessage = "Il y a eu une erreur. Réessayez.";
+//				request.setAttribute("errorMessage", errorMessage);
+//				
+//			}
 
 
 //			if(pseudo.equals(utilisateur.getPseudo()) || pseudo.equals(utilisateur.getEmail()) && 
 //					motDePasse.equals(utilisateur.getMotDePasse()))
-
-		
-		}
+	
 		if(request.getParameter("creercompte")!= null) {
 			nextScreen = "SignUpServlet";
 		}
 
-//		request.setAttribute("model", model);
 		request.getRequestDispatcher(nextScreen).forward(request, response);
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
