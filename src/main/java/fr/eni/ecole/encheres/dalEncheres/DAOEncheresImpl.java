@@ -47,18 +47,20 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	private final static String FILTER_BY_ETAT_VENTE = "av.etat_vente = ?";
 	private final static String FILTER_BY_VENDEUR = "av.no_utilisateur = ?";
 	private static final String SELECT_ALL_FROM_ARTICLE = "SELECT DISTINCT av.no_article, av.nom_article, av.description, av.date_debut_encheres, "
-			+ "												av.date_fin_encheres, av.prix_initial, av.prix_vente, av.etat_vente, c.no_categorie, c.libelle, u.no_utilisateur"
+			+ "												av.date_fin_encheres, av.prix_initial, av.prix_vente, av.etat_vente, c.no_categorie, c.libelle, u.no_utilisateur,"
+			+ "												v.*"
 			+ "												FROM articles_vendus av"
 			+ "												LEFT JOIN encheres e ON e.no_article = av.no_article "
 			+ "												LEFT JOIN categories c ON c.no_categorie = av.no_categorie "
-			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur";
+			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur"
+			+ "												INNER JOIN utilisateurs v ON v.no_utilisateur = av.no_utilisateur";
 	private final static String FILTER_BY_GAGNANT = "e.montant_enchere = av.prix_vente";	
 	DAOCategorie daoCat = DAOCategorieFactory.getInstance();
 	UtilisateurDAO daoUtil = UtilisateurDAOFactory.getInstance();
 
 	@Override
 	public void insert(Enchere enchere) throws DALException {
-		Date date = java.sql.Date.valueOf(enchere.getDateEnchere());
+		Date date = Date.valueOf(enchere.getDateEnchere());
 		try (Connection cnx = JdbcTools.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -203,32 +205,33 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		Integer prixVente = rs.getInt("prix_vente");
 		String etatVente = rs.getString("etat_vente");
 		Categorie categorie = daoCat.mapCateg(rs);
+		Utilisateur vendeur = daoUtil.map(rs);
 
 		ArticleVendu articleVendu = new ArticleVendu(noArticle, nomArticle, description, dateDebutEncheres,
-				dateFinEncheres, miseAPrix, prixVente, etatVente, categorie);
+				dateFinEncheres, miseAPrix, prixVente, etatVente, categorie, vendeur);
 
 		return articleVendu;
 	}
 
-//	@Override
-//	public Utilisateur mapUtil(ResultSet rs) throws SQLException {
-//		Integer noUtilisateur = rs.getInt("no_utilisateur");
-//		String pseudo = rs.getString("pseudo");
-//		String nom = rs.getString("nom");
-//		String prenom = rs.getString("prenom");
-//		String email = rs.getString("email");
-//		String telephone = rs.getString("telephone");
-//		String rue = rs.getString("rue");
-//		String codePostal = rs.getString("code_postal");
-//		String ville = rs.getString("ville");
-//		String motDePasse = rs.getString("mot_de_passe");
-//		Integer credit = rs.getInt("credit");
-//		boolean administrateur = rs.getBoolean("administrateur");
-//
-//		Utilisateur utilisateur = new Utilisateur(noUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal,
-//				ville, motDePasse, credit, administrateur);
-//		return utilisateur;
-//	}
+	@Override
+	public Utilisateur mapUtil(ResultSet rs) throws SQLException {
+		Integer noUtilisateur = rs.getInt("no_utilisateur");
+		String pseudo = rs.getString("pseudo");
+		String nom = rs.getString("nom");
+		String prenom = rs.getString("prenom");
+		String email = rs.getString("email");
+		String telephone = rs.getString("telephone");
+		String rue = rs.getString("rue");
+		String codePostal = rs.getString("code_postal");
+		String ville = rs.getString("ville");
+		String motDePasse = rs.getString("mot_de_passe");
+		Integer credit = rs.getInt("credit");
+		boolean administrateur = rs.getBoolean("administrateur");
+
+		Utilisateur utilisateur = new Utilisateur(noUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal,
+				ville, motDePasse, credit, administrateur);
+		return utilisateur;
+	}
 
 	private Enchere mapEnchere(ResultSet rs) throws SQLException {
 

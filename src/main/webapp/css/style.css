@@ -9,24 +9,7 @@
   right: 16px;
   font-size: 18px;
 }
-#classement_general {
-	display : flex;
-	flex-direction: column;
-	align-items: center;
-}
-#classement_equipe_sexe {
-	display: flex;
-	 justify-content: space-evenly;
-}
 
-#classement_age {
-	display: flex;
-	 justify-content: space-evenly;
-}
-
-.titre_classement {
-	text-align:center;
-}
 #listEncheres {
 	display:flex;
 	justify-content: space-around;

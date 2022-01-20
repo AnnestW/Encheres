@@ -23,12 +23,8 @@ public class ModelEncheres {
 	}
 
 
-	
-
-
 	public ModelEncheres(Enchere enchere, Utilisateur utilisateur, ArticleVendu articleAVendre, Categorie categorie,
 			List<ArticleVendu> lstEncheres,List<Categorie> lstCategories, String message) {
-		super();
 		this.enchere = enchere;
 		this.utilisateur = utilisateur;
 		this.articleAVendre = articleAVendre;
