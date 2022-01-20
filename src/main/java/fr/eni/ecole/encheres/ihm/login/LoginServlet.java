@@ -34,48 +34,44 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Utilisateur utilisateur = new Utilisateur();
+		//Utilisateur utilisateur = new Utilisateur();
 		UtilisateurManager mgr = UtilisateurManagerSingleton.getInstance();
 		
-		String EcranLogin = "/WEB-INT/login.jsp";
+		String nextScreen = "/WEB-INF/login.jsp";
 		
 		if(request.getParameter("connexion")!= null) {
 		
 //	
-			String login = request.getParameter("pseudo");
+			String pseudo = request.getParameter("login");
 			String motDePasse = request.getParameter("motDePasse");
 			
 			Utilisateur user = null;
 			try {
-				user = mgr.chercherUtilisateur(login, motDePasse);
+				user = mgr.chercherUtilisateur(pseudo, motDePasse);
 			} catch (BLLException e) {
 				e.printStackTrace();
 			} 
+			request.getSession().setAttribute("user", user);
+			nextScreen = "EncheresServlet";
 			
 			if (user ==null) {
 				String errorMessage = "Il y a eu une erreur";
 				request.setAttribute("errorMessage", errorMessage);
 				
-				request.getRequestDispatcher(EcranLogin).forward(request, response);
 			}
 
 
-			if(login.equals(utilisateur.getPseudo()) || login.equals(utilisateur.getEmail()) && 
-					motDePasse.equals(utilisateur.getMotDePasse())){
-				
-				request.getSession().setAttribute("login", login);
-				
-				EcranLogin = "OuvertEncheresServlet";
-				
-			}
+//			if(pseudo.equals(utilisateur.getPseudo()) || pseudo.equals(utilisateur.getEmail()) && 
+//					motDePasse.equals(utilisateur.getMotDePasse()))
+
 		
 		}
 		if(request.getParameter("creercompte")!= null) {
-			EcranLogin = "SignUpServlet";
+			nextScreen = "SignUpServlet";
 		}
 
 //		request.setAttribute("model", model);
-		request.getRequestDispatcher(EcranLogin).forward(request, response);
+		request.getRequestDispatcher(nextScreen).forward(request, response);
 
 	}
 

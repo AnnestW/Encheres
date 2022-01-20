@@ -5,15 +5,16 @@ import java.time.format.DateTimeFormatter;
 
 import fr.eni.ecole.encheres.bo.ArticleVendu;
 import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.dal.UtilisateurDAO;
+import fr.eni.ecole.encheres.dal.UtilisateurDAOFactory;
 import fr.eni.ecole.encheres.dalEncheres.DALException;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateur;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateurFactory;
+
 
 public class BLLTest {
 
 	public static void main(String[] args) throws DALException, BLLException {
 		EncheresManager mgr = EncheresSingl.getInstance();
-		DAOUtilisateur daoU = DAOUtilisateurFactory.getInstance();
+		UtilisateurDAO daoU = UtilisateurDAOFactory.getInstance();
 		
 	
 		

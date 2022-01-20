@@ -1,5 +1,6 @@
 package fr.eni.ecole.encheres.dal;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,5 +17,8 @@ public interface UtilisateurDAO {
 	public void updatePassword(String password, String pseudo) throws DALException;
 	
 	public void insert(Utilisateur nouvelUtilisateur) throws DALException;
+
+
+	public Utilisateur map(ResultSet rs) throws SQLException;
 	
 }

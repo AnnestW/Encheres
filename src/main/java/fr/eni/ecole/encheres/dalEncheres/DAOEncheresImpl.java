@@ -12,14 +12,15 @@ import java.util.List;
 
 
 import fr.eni.ecole.encheres.dal.JdbcTools;
+import fr.eni.ecole.encheres.dal.UtilisateurDAO;
+import fr.eni.ecole.encheres.dal.UtilisateurDAOFactory;
 import fr.eni.ecole.encheres.bo.ArticleVendu;
 import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorie;
 import fr.eni.ecole.encheres.dalCategorie.DAOCategorieFactory;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateur;
-import fr.eni.ecole.encheres.dalUtilisateur.DAOUtilisateurFactory;
+
 
 public class DAOEncheresImpl implements DAOEnchere {
 
@@ -53,7 +54,7 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 			+ "												LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur";
 	private final static String FILTER_BY_GAGNANT = "e.montant_enchere = av.prix_vente";	
 	DAOCategorie daoCat = DAOCategorieFactory.getInstance();
-	DAOUtilisateur daoUtil = DAOUtilisateurFactory.getInstance();
+	UtilisateurDAO daoUtil = UtilisateurDAOFactory.getInstance();
 
 	@Override
 	public void insert(Enchere enchere) throws DALException {
@@ -80,9 +81,9 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	public List<ArticleVendu> getEncheresEnCours() throws DALException {
 		List<ArticleVendu> lstAllEncheres = getAllEncheres();
 		List<ArticleVendu> lstEncheresEnCours = new ArrayList<ArticleVendu>();
-		for (ArticleVendu article : lstAllEncheres) {
-			if (article.getEtatVente().equalsIgnoreCase("EN_COURS")) {
-				lstEncheresEnCours.add(article);
+		for (ArticleVendu articleAVendre : lstAllEncheres) {
+			if (articleAVendre.getEtatVente().equalsIgnoreCase("EN_COURS")) {
+				lstEncheresEnCours.add(articleAVendre);
 			}
 		}
 		return lstEncheresEnCours;
@@ -96,8 +97,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 			Statement stmt = cnx.createStatement();
 			ResultSet rs = stmt.executeQuery(SELECT_ALL_FROM_ARTICLE);
 			while (rs.next()) {
-				ArticleVendu article = mapArt(rs);
-				lstAllEncheres.add(article);
+				ArticleVendu articleAVendre = mapArt(rs);
+				lstAllEncheres.add(articleAVendre);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,7 +127,7 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 	@Override
 	public List<ArticleVendu> selectByFilter(String nomArticle, Integer noCategorie, Integer noEncherisseur,
 			String etatVente, Integer noVendeur) throws DALException {
-		ArticleVendu article = null;
+		ArticleVendu articleAVendre = null;
 		// String query = SELECT_ALL;
 		String query = SELECT_ALL_FROM_ARTICLE;
 		int i = 1;
@@ -177,8 +178,8 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 		
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				article = mapArt(rs);
-				liste.add(article);
+				articleAVendre = mapArt(rs);
+				liste.add(articleAVendre);
 
 			}
 
@@ -228,22 +229,22 @@ public static final String ETAT_NON_DEBUTE = "NON_DEBUTE";
 //				ville, motDePasse, credit, administrateur);
 //		return utilisateur;
 //	}
-//
+
 	private Enchere mapEnchere(ResultSet rs) throws SQLException {
 
 		Integer noEnchere = rs.getInt("no_enchere");
-		ArticleVendu article = mapArt(rs);
+		ArticleVendu articleAVendre = mapArt(rs);
 		LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
 		Integer montantEnchere = rs.getInt("montant_enchere");
-		Utilisateur encherisseur = daoUtil.mapUtil(rs);
+		Utilisateur encherisseur = daoUtil.map(rs);
 
-		Enchere enchere = new Enchere(noEnchere, article, dateEnchere, montantEnchere, encherisseur);
+		Enchere enchere = new Enchere(noEnchere, articleAVendre, dateEnchere, montantEnchere, encherisseur);
 
 		return enchere;
 	}
 
 	@Override
-	public Enchere selectByArticleEncherisseur(ArticleVendu article, Utilisateur encherisseur) throws DALException {
+	public Enchere selectByArticleEncherisseur(ArticleVendu articleAVendre, Utilisateur encherisseur) throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}

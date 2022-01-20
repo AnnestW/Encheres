@@ -2,8 +2,6 @@ package fr.eni.ecole.encheres.bo;
 
 public class Utilisateur {
 	
-
-	
 	private Integer noUtilisateur;
 	private String pseudo;
 	private String nom;

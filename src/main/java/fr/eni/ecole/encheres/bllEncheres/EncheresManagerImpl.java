@@ -19,21 +19,21 @@ public class EncheresManagerImpl implements EncheresManager {
 	// Méthode en charge de créér une nouvelle enchère sur un article mis à vendre,
 	// suivant les conditions données.
 	@Override
-	public void encherir(ArticleVendu article, LocalDate dateEnchere, Integer montantEnchere, Utilisateur encherisseur)
+	public void encherir(ArticleVendu articleAVendre, LocalDate dateEnchere, Integer montantEnchere, Utilisateur encherisseur)
 			throws BLLException {
 
 		BLLException e = new BLLException();
-		if (verificationMontant(article, montantEnchere, e)) {
-			createOrUpdate(article, dateEnchere, encherisseur, montantEnchere, e);
+		if (verificationMontant(articleAVendre, montantEnchere, e)) {
+			createOrUpdate(articleAVendre, dateEnchere, encherisseur, montantEnchere, e);
 		}
 	}
 
-	void createOrUpdate(ArticleVendu article, LocalDate dateEnchere, Utilisateur encherisseur, Integer montantEnchere,
+	void createOrUpdate(ArticleVendu articleAVendre, LocalDate dateEnchere, Utilisateur encherisseur, Integer montantEnchere,
 			BLLException e) throws BLLException {
 		Enchere enchereExistante;
-		Enchere enchere = new Enchere(article, dateEnchere, montantEnchere, encherisseur);
+		Enchere enchere = new Enchere(articleAVendre, dateEnchere, montantEnchere, encherisseur);
 		try {
-			enchereExistante = dao.selectByArticleEncherisseur(article, encherisseur);
+			enchereExistante = dao.selectByArticleEncherisseur(articleAVendre, encherisseur);
 		} catch (DALException e1) {
 			e1.printStackTrace();
 			throw new BLLException(e);
@@ -60,11 +60,11 @@ public class EncheresManagerImpl implements EncheresManager {
 
 	}
 
-	public boolean verificationMontant(ArticleVendu article, Integer montant_enchere, BLLException e) {
+	public boolean verificationMontant(ArticleVendu articleAVendre, Integer montant_enchere, BLLException e) {
 		boolean verif = true;
-		if (montant_enchere <= article.getMiseAPrix()) {
+		if (montant_enchere <= articleAVendre.getMiseAPrix()) {
 			e.ajouterErreur(
-					new ParameterException("Le montant de l'enchère doit être supérieur à" + article.getMiseAPrix()));
+					new ParameterException("Le montant de l'enchère doit être supérieur à" + articleAVendre.getMiseAPrix()));
 			verif = false;
 		}
 		return verif;

@@ -16,7 +16,7 @@ import fr.eni.ecole.encheres.bll.UtilisateurManagerSingleton;
 /**
  * Servlet implementation class CreerCompteServlet
  */
-@WebServlet("/CreerCompteServlet")
+@WebServlet("/SignUpServlet")
 public class SignUpServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String EcranSignUp = "/WEB-INT/signup.jsp";
+		String EcranSignUp = "/WEB-INF/signup.jsp";
 		
 		if(request.getParameter("creer") != null) {
 		
